@@ -17,7 +17,10 @@
             (fn [] (thunk (rest words) (mergeword (first words) dict) thunk))))
         ]
 
-     (set (vals (trampoline thendo words {} thendo)))))
+     (set
+      (filter
+       (fn [s] (> (count s) 1))
+       (vals (trampoline thendo words {} thendo))))))
 
  ["meat" "mat" "team" "mate" "eat"])
 
