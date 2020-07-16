@@ -1,43 +1,50 @@
-(defn f [orig]
-  (def brackets
-    {\{ \},
-     \[ \],
-     \( \)})
-  (defn isstart [c] (not (nil? (brackets c))))
-  (defn isend [c] (not (nil? ((set (vals brackets)) c))))
-  (loop
-      [s orig
-       stack ()]
-    ;(println "running" s stack)
-    (let [c (first s)]
-      (cond
-        (empty? s)
-        (do
-          ;(prn "end")
-          (empty? stack))
+(def f
 
-        (isstart c)
-        (do
-          ;(println "start" c)
-          (recur
-           (rest s)
-           (conj stack c)))
+  (fn [orig]
+    (let [
+          brackets
+          {\{ \},
+           \[ \],
+           \( \)}
 
-        (isend c)
-        (do
-          ;(println "end" c)
-          (let [expected (brackets (first stack))]
-            (if (= expected c)
-              (recur (rest s) (rest stack))
-              false))
-          )
+          isstart (fn [c] (not (nil? (brackets c))))
+          isend (fn [c] (not (nil? ((set (vals brackets)) c))))
+          ]
+      (loop
+          [s orig
+           stack ()]
+                                        ;(println "running" s stack)
+        (let [c (first s)]
+          (cond
+            (empty? s)
+            (do
+                                        ;(prn "end")
+              (empty? stack))
 
-        :else
-        (do
-          ;(prn "charprc" c)
-          (recur (rest s) stack)
-          )
-        ))))
+            (isstart c)
+            (do
+                                        ;(println "start" c)
+              (recur
+               (rest s)
+               (conj stack c)))
+
+            (isend c)
+            (do
+                                        ;(println "end" c)
+              (let [expected (brackets (first stack))]
+                (if (= expected c)
+                  (recur (rest s) (rest stack))
+                  false))
+              )
+
+            :else
+            (do
+                                        ;(prn "charprc" c)
+              (recur (rest s) stack)
+              )
+            )))))
+
+  )
 
 (def cases `(
              (f "This string has no brackets.")
