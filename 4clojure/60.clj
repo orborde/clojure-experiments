@@ -1,7 +1,23 @@
 (def __
 
   (fn
-    ([a b] "hello")
+    ([r s]
+     ((fn q [data remaining]
+        (cond
+          (empty? remaining)
+          (list data)
+
+          :else
+          (let [newdata (r data (first remaining))]
+            (lazy-seq
+             (cons
+              data
+              (q newdata (rest remaining))
+              )
+             )
+            )
+          )) (first s) (rest s)))
+
     ([a b c] "beans")
     )
 
@@ -21,4 +37,4 @@
    (let [[expr expected] cs
          actual (eval expr)
          status (if (= actual expected) "pass" "FAIL")]
-     (prn status expr actual))))
+     (prn status expr "expected:" expected, "actual" actual))))
