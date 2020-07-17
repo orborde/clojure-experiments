@@ -1,24 +1,23 @@
 (def __
 
-  (fn
-    ([r s]
-     ((fn q [data remaining]
-        (cond
-          (empty? remaining)
-          (list data)
+  (fn myred
+    ([r data remaining]
+     (cond
+       (empty? remaining)
+       (list data)
 
-          :else
-          (let [newdata (r data (first remaining))]
-            (lazy-seq
-             (cons
-              data
-              (q newdata (rest remaining))
-              )
-             )
-            )
-          )) (first s) (rest s)))
+       :else
+       (let [newdata (r data (first remaining))]
+         (lazy-seq
+          (cons
+           data
+           (myred r newdata (rest remaining))
+           )
+          )
+         )
+       ))
 
-    ([a b c] "beans")
+    ([r remaining] (myred r (first remaining) (rest remaining)))
     )
 
   )
