@@ -1,17 +1,18 @@
 (println
 
  (
-  ((fn [& funcs]
+  (
+   (fn [& funcs]
      (let [appq (reverse funcs)]
        (fn [& initargs]
-         (loop [args initargs
-                nxt (first appq)
+         (loop [data (apply (first appq) initargs)
                 remain (rest appq)]
-           (let [v (apply nxt [args])]
-             (println args nxt remain v)
-             (if (empty? remain)
+           (let [nxt (first remain)
+                 v (apply nxt [data])]
+             (println "nxt:" data nxt remain v)
+             (if (empty? (rest remain))
                v
-               (recur v (first remain) (rest remain))
+               (recur v (rest remain))
                )
              )
            )
