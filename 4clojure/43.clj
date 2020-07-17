@@ -1,14 +1,7 @@
 (def __
 
 (fn [coll numgroups]
-	(let [chunks
-          (loop [result []
-                 remaining coll]
-            (if (empty? remaining)
-              result
-              (recur (conj result (take numgroups remaining))
-                     (drop numgroups remaining))))]
-      (apply interleave chunks)))
+  (partition (/ (count coll) numgroups) (apply interleave (partition numgroups coll))))
 
   )
 
